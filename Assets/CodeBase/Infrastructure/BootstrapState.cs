@@ -23,7 +23,7 @@ namespace Assets.CodeBase.Infrastructure
 
         private void EnterLoadLevel()
         {
-            _stateMachine.Enter<LoadLevelState>();
+            _stateMachine.Enter<LoadLevelState, string>("Main");
         }
 
         private void RegisterServices()

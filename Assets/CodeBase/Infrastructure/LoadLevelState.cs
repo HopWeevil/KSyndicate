@@ -2,7 +2,7 @@
 
 namespace Assets.CodeBase.Infrastructure
 {
-    public class LoadLevelState : IState
+    public class LoadLevelState : IPayloadedState<string>
     {
         private GameStateMachine _stateMachine;
         private SceneLoader _sceneLoader;
@@ -13,9 +13,9 @@ namespace Assets.CodeBase.Infrastructure
             _sceneLoader = sceneLoader;
         }
 
-        public void Enter()
+        public void Enter(string sceneName)
         {
-            _sceneLoader.Load("Main");
+            _sceneLoader.Load(sceneName);
         }
 
         public void Exit()
