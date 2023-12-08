@@ -1,4 +1,5 @@
 ﻿using CodeBase.Infrastructure;
+using CodeBase.Logic;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -11,12 +12,13 @@ namespace Assets.CodeBase.Infrastructure
         private readonly Dictionary<Type, IExitableState> _states;
         private IExitableState _activeState;
 
-        public GameStateMachine(SceneLoader sceneLoader)
+        public GameStateMachine(SceneLoader sceneLoader, LoadingCurtain curtain)
         {
             _states = new Dictionary<Type, IExitableState>
             {
                 [typeof(BootstrapState)] = new BootstrapState(this, sceneLoader),
-                [typeof(LoadLevelState)] = new LoadLevelState(this, sceneLoader),
+                [typeof(LoadLevelState)] = new LoadLevelState(this, sceneLoader, curtain),
+                [typeof(GameLoopState)] = new GameLoopState(this),
             };
         }
 
