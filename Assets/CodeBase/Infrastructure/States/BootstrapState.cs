@@ -1,8 +1,11 @@
 ﻿using CodeBase.Infrastructure;
+using CodeBase.Infrastructure.AssetManagment;
+using CodeBase.Infrastructure.Factory;
+using CodeBase.Infrastructure.Services;
 using CodeBase.Services.Input;
 using UnityEngine;
 
-namespace Assets.CodeBase.Infrastructure
+namespace CodeBase.Infrastructure.States
 {
     public class BootstrapState : IState
     {
@@ -29,6 +32,7 @@ namespace Assets.CodeBase.Infrastructure
         private void RegisterServices()
         {
             Game.InputService = RegisterInputService();
+            AllServices.Container.RegisterSingle<IGameFactory>(new GameFactory(AllServices.Container.Single<IAssetProvider>()));
         }
 
         public void Exit()
@@ -39,7 +43,9 @@ namespace Assets.CodeBase.Infrastructure
         private static IInputService RegisterInputService()
         {
             if (Application.isEditor)
+            {
                 return new StandaloneInputService();
+            }
             else
             {
                 return new MobileInputService();

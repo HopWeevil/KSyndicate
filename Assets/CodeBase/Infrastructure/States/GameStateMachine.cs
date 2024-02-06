@@ -5,7 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Assets.CodeBase.Infrastructure
+namespace CodeBase.Infrastructure.States
 {
     public class GameStateMachine
     {

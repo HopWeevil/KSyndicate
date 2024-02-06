@@ -1,4 +1,4 @@
-﻿using Assets.CodeBase.Infrastructure;
+﻿using CodeBase.Infrastructure.States;
 using CodeBase.Logic;
 using UnityEngine;
 
