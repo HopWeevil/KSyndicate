@@ -1,12 +1,13 @@
+using CodeBase.Infrastructure;
 using CodeBase.Infrastructure.Services;
 using UnityEngine;
 
 namespace CodeBase.Services.Input
 {
-    public interface IInputService : IService
-    {
-        Vector2 Axis { get; }
+  public interface IInputService : IService
+  {
+    Vector2 Axis { get; }
 
-        bool IsAttackButtonUp();
-    }
+    bool IsAttackButtonUp();
+  }
 }
