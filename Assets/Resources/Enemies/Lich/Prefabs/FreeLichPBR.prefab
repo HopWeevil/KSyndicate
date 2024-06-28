@@ -541,6 +541,7 @@ MonoBehaviour:
   _attackCooldown: 3
   _cleavage: 0.5
   _effectiveDistance: 0.5
+  _damage: 10
 --- !u!114 &3350403523999560202
 MonoBehaviour:
   m_ObjectHideFlags: 0

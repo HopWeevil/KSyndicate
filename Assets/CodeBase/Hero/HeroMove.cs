@@ -1,5 +1,4 @@
 ﻿using CodeBase.Data;
-using CodeBase.Infrastructure;
 using CodeBase.Infrastructure.Services;
 using CodeBase.Infrastructure.Services.PersistentProgress;
 using CodeBase.Services.Input;
@@ -32,11 +31,11 @@ namespace CodeBase.Hero
 
             if (_inputService.Axis.sqrMagnitude > Constants.Epsilon)
             {
-            movementVector = _camera.transform.TransformDirection(_inputService.Axis);
-            movementVector.y = 0;
-            movementVector.Normalize();
+                movementVector = _camera.transform.TransformDirection(_inputService.Axis);
+                movementVector.y = 0;
+                movementVector.Normalize();
 
-            transform.forward = movementVector;
+                transform.forward = movementVector;
             }
 
             movementVector += Physics.gravity;
@@ -51,11 +50,16 @@ namespace CodeBase.Hero
 
         public void LoadProgress(PlayerProgress progress)
         {
-            if (CurrentLevel() != progress.WorldData.PositionOnLevel.Level) return;
+            if (CurrentLevel() != progress.WorldData.PositionOnLevel.Level)
+            {
+                return;
+            }
 
             Vector3Data savedPosition = progress.WorldData.PositionOnLevel.Position;
-            if (savedPosition != null) 
-            Warp(to: savedPosition);
+            if (savedPosition != null)
+            {
+                Warp(to: savedPosition);
+            }
         }
 
         private static string CurrentLevel()

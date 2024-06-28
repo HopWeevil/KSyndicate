@@ -1,3 +1,4 @@
+using CodeBase.Hero;
 using CodeBase.Infrastructure.Factory;
 using CodeBase.Infrastructure.Services;
 using System;
@@ -14,6 +15,7 @@ namespace CodeBase.Enemy
         [SerializeField] private float _attackCooldown = 3f;
         [SerializeField] private float _cleavage = 0.5f;
         [SerializeField] private float _effectiveDistance = 0.5f;
+        [SerializeField] private float _damage = 10f;
 
         private IGameFactory _gameFactory;
         private Transform _heroTransform;
@@ -46,6 +48,7 @@ namespace CodeBase.Enemy
             if(Hit(out Collider collider))
             {
                 PhysicsDebug.DrawDebug(CalculateStartPoint(), _cleavage, 1f);
+                collider.transform.GetComponent<HeroHealth>().TakeDamage(_damage);
             }
         }
 
