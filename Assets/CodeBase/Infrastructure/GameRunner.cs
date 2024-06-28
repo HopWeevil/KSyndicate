@@ -2,16 +2,16 @@ using UnityEngine;
 
 namespace CodeBase.Infrastructure
 {
-  public class GameRunner : MonoBehaviour
-  {
-    public GameBootstrapper BootstrapperPrefab;
-    private void Awake()
+    public class GameRunner : MonoBehaviour
     {
-      var bootstrapper = FindObjectOfType<GameBootstrapper>();
+        public GameBootstrapper BootstrapperPrefab;
+        private void Awake()
+        {
+            var bootstrapper = FindObjectOfType<GameBootstrapper>();
       
-      if(bootstrapper != null) return;
+            if(bootstrapper != null) return;
 
-      Instantiate(BootstrapperPrefab);
+            Instantiate(BootstrapperPrefab);
+        }
     }
-  }
 }
