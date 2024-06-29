@@ -15,5 +15,7 @@ namespace CodeBase.Infrastructure.Factory
         event Action HeroCreated; 
         List<ISavedProgress> ProgressWriters { get; }
         void Cleanup();
+
+        void Register(ISavedProgressReader savedProgress);
     }
 }

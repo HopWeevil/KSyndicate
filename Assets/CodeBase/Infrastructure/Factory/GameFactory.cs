@@ -59,15 +59,15 @@ namespace CodeBase.Infrastructure.Factory
         {
             foreach (ISavedProgressReader progressReader in gameObject.GetComponentsInChildren<ISavedProgressReader>())
             {
-            Register(progressReader);
+                Register(progressReader);
             }
         }
 
-        private void Register(ISavedProgressReader progressReader)
+        public void Register(ISavedProgressReader progressReader)
         {
-            if(progressReader is ISavedProgress progressWriter)
-            ProgressWriters.Add(progressWriter);
-      
+            if (progressReader is ISavedProgress progressWriter)
+                ProgressWriters.Add(progressWriter);
+
             ProgressReaders.Add(progressReader);
         }
     }
