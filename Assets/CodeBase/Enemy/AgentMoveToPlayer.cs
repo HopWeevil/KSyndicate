@@ -14,48 +14,27 @@ namespace CodeBase.Enemy
         public NavMeshAgent Agent;
     
         private Transform _heroTransform;
-        private IGameFactory _gameFactory;
-
-        private void Start()
+        public void Construct(Transform heroTransform)
         {
-            _gameFactory = AllServices.Container.Single<IGameFactory>();
-
-            if (_gameFactory.HeroGameObject != null)
-            InitializeHeroTransform();
-            else
-            _gameFactory.HeroCreated += HeroCreated;
+            _heroTransform = heroTransform;
         }
 
         private void Update()
         {
-            if(IsInitialized() && IsHeroNotReached())
-            Agent.destination = _heroTransform.position;
-        }
-
-        private void OnDestroy()
-        {
-            if(_gameFactory != null)
-            _gameFactory.HeroCreated -= HeroCreated;
+            if (IsInitialized() && IsHeroNotReached())
+            {
+                Agent.destination = _heroTransform.position;
+            }
         }
 
         private bool IsInitialized()
         {
             return _heroTransform != null;
         }
-
-        private void HeroCreated()
-        {
-            InitializeHeroTransform();
-        }
-
-        private void InitializeHeroTransform()
-        {
-            _heroTransform = _gameFactory.HeroGameObject.transform;
-        }
-
+     
         private bool IsHeroNotReached()
         {
             return Agent.transform.position.SqrMagnitudeTo(_heroTransform.position) >= MinimalDistance;
-        }
+        }    
     }
 }

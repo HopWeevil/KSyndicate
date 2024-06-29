@@ -13,12 +13,11 @@ namespace CodeBase.Enemy
     public class Attack : MonoBehaviour
     {
         [SerializeField] private EnemyAnimator _animator;
-        [SerializeField] private float _attackCooldown = 3f;
-        [SerializeField] private float _cleavage = 0.5f;
-        [SerializeField] private float _effectiveDistance = 0.5f;
-        [SerializeField] private float _damage = 10f;
+        public float AttackCooldown = 3f;
+        public float Cleavage = 0.5f;
+        public float EffectiveDistance = 0.5f;
+        public float Damage = 10f;
 
-        private IGameFactory _gameFactory;
         private Transform _heroTransform;
 
         private float _currentCooldown;
@@ -27,11 +26,14 @@ namespace CodeBase.Enemy
         private Collider[] _hits = new Collider[1];
         private bool _attackIsActive;
 
+        public void Construct(Transform heroTransfrom)
+        {
+            _heroTransform = heroTransfrom;
+        }
+
         private void Awake()
         {
             _layerMask = 1 << LayerMask.NameToLayer("Player");
-            _gameFactory = AllServices.Container.Single<IGameFactory>();
-            _gameFactory.HeroCreated += OnHeroCreated;
         }
 
         private void Update()
@@ -48,17 +50,17 @@ namespace CodeBase.Enemy
         {
             if(Hit(out Collider collider))
             {
-                PhysicsDebug.DrawDebug(CalculateStartPoint(), _cleavage, 1f);
-                collider.transform.GetComponent<IHealth>().TakeDamage(_damage);
+                PhysicsDebug.DrawDebug(CalculateStartPoint(), Cleavage, 1f);
+                collider.transform.GetComponent<IHealth>().TakeDamage(Damage);
             }
         }
-
-       
+      
         private void OnAttackEnded()
         {
-            _currentCooldown = _attackCooldown;
+            _currentCooldown = AttackCooldown;
             _isAttacking = false;
         }
+
         public void EnableAttack()
         {
             _attackIsActive = true;
@@ -68,7 +70,6 @@ namespace CodeBase.Enemy
         {
             _attackIsActive = false;
         }
-
 
         private bool CanAttack()
         {
@@ -82,6 +83,7 @@ namespace CodeBase.Enemy
                 _currentCooldown -= Time.deltaTime;
             }
         }
+
         private bool CooldownIsUp()
         {
             return _currentCooldown <= 0;
@@ -96,19 +98,14 @@ namespace CodeBase.Enemy
 
         private bool Hit(out Collider hit)
         {
-            int hitCount = Physics.OverlapSphereNonAlloc(CalculateStartPoint(), _cleavage, _hits, _layerMask);
+            int hitCount = Physics.OverlapSphereNonAlloc(CalculateStartPoint(), Cleavage, _hits, _layerMask);
             hit = _hits.FirstOrDefault();
             return hitCount > 0;
         }
 
         private Vector3 CalculateStartPoint()
         {
-            return new Vector3(transform.position.x, transform.position.y + 0.5f, transform.position.z) + transform.forward * _effectiveDistance;
-        }
-
-        private void OnHeroCreated()
-        {
-            _heroTransform = _gameFactory.HeroGameObject.transform;
+            return new Vector3(transform.position.x, transform.position.y + 0.5f, transform.position.z) + transform.forward * EffectiveDistance;
         }
     }
 }
