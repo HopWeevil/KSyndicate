@@ -20,7 +20,7 @@ namespace CodeBase.Enemy
 
         private Transform _heroTransform;
 
-        private float _currentCooldown;
+        public float _currentCooldown;
         private bool _isAttacking;
         private int _layerMask;
         private Collider[] _hits = new Collider[1];
@@ -34,6 +34,24 @@ namespace CodeBase.Enemy
         private void Awake()
         {
             _layerMask = 1 << LayerMask.NameToLayer("Player");
+        }
+
+        private void Start()
+        {
+            _animator.StateExited += OnStateExited;
+        }
+
+        private void OnStateExited(AnimatorState state)
+        {
+            if(state == AnimatorState.Attack)
+            {
+                OnAttackEnded();
+            }
+        }
+
+        private void OnDestroy()
+        {
+            
         }
 
         private void Update()
@@ -57,9 +75,11 @@ namespace CodeBase.Enemy
       
         private void OnAttackEnded()
         {
-            _currentCooldown = AttackCooldown;
-            _isAttacking = false;
+
+            ResetAttack();
         }
+
+      
 
         public void EnableAttack()
         {
@@ -69,6 +89,7 @@ namespace CodeBase.Enemy
         public void DisableAttack()
         {
             _attackIsActive = false;
+            ResetAttack();
         }
 
         private bool CanAttack()
@@ -91,9 +112,17 @@ namespace CodeBase.Enemy
 
         private void StartAttack()
         {
-            transform.LookAt(_heroTransform);
-            _animator.PlayAttack();
             _isAttacking = true;
+            transform.LookAt(_heroTransform);
+            _animator.StartAttack();
+        }
+
+        private void ResetAttack()
+        {
+           // Debug.Log("Reset");
+            _isAttacking = false;
+           // _animator.StopAttack();
+            _currentCooldown = AttackCooldown;
         }
 
         private bool Hit(out Collider hit)

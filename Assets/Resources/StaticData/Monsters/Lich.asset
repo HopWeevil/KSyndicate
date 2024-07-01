@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: Lich
   m_EditorClassIdentifier: 
   MonsterTypeId: 0
-  Hp: 50
-  Damage: 10
+  Hp: 3
+  Damage: 5
   EffectiveDistance: 0.5
   Cleavage: 0.5
   MoveSpeed: 3
-  Prefab: {fileID: 8522529412659325093, guid: a8878c0fa5a0e464ca4b5a1f28713713, type: 3}
+  Prefab: {fileID: 5159685399465329419, guid: 58bfdcdcb5df542b9bd638a51d825a6c, type: 3}
