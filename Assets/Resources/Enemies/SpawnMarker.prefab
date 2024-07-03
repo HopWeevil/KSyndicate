@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &1158363581289784167
+--- !u!1 &6354166241302723396
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,23 +8,23 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 1158363581289784165}
-  - component: {fileID: 1158363581289784164}
-  - component: {fileID: 6890673051543416655}
+  - component: {fileID: 3319358907940358283}
+  - component: {fileID: 2384254708810344187}
+  - component: {fileID: 6327733644618841688}
   m_Layer: 0
-  m_Name: Spawner
-  m_TagString: EnemySpawner
+  m_Name: SpawnMarker
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &1158363581289784165
+--- !u!4 &3319358907940358283
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1158363581289784167}
+  m_GameObject: {fileID: 6354166241302723396}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
@@ -33,30 +33,29 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1158363581289784164
+--- !u!114 &2384254708810344187
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1158363581289784167}
+  m_GameObject: {fileID: 6354166241302723396}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5df5ed280314a4d4683e4ae5be50e21f, type: 3}
+  m_Script: {fileID: 11500000, guid: 87dd004502bb03b4797082c271cad3e0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _monsterTypeId: 0
-  _slain: 0
---- !u!114 &6890673051543416655
+  MonsterTypeId: 0
+--- !u!114 &6327733644618841688
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1158363581289784167}
+  m_GameObject: {fileID: 6354166241302723396}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7b57db0d9bdd3aa43a52d97f35e767ad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Id: Spawner_cf9efcf8-b38f-4bba-8ea0-ac087cdc9cae
+  Id: Main_94df1f43-97ac-42e2-acd5-0f5b97fb66b2

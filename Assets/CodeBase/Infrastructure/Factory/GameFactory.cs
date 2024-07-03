@@ -1,13 +1,13 @@
-using System;
-using System.Collections.Generic;
 using CodeBase.Enemy;
 using CodeBase.Infrastructure.AssetManagement;
 using CodeBase.Infrastructure.Services.PersistentProgress;
 using CodeBase.Logic;
+using CodeBase.Logic.EnemySpawners;
 using CodeBase.Services.Randomizer;
 using CodeBase.Services.StaticData;
 using CodeBase.StaticData;
 using CodeBase.UI;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -55,6 +55,43 @@ namespace CodeBase.Infrastructure.Factory
             return lootPiece;
         }
 
+        public void CreateSpawner(Vector3 position, string spawnerId, MonsterTypeId monsterTypeId)
+        {
+            SpawnPoint spawner = InstantiateRegistered(AssetPath.Spawner, position).GetComponent<SpawnPoint>();
+
+            spawner.Construct(this);
+            spawner.MonsterTypeId = monsterTypeId;
+            spawner.Id = spawnerId;
+        }
+
+        public GameObject CreateMonster(MonsterTypeId monsterTypeId, Transform parent)
+        {
+            MonsterStaticData monsterData = _staticDataService.ForMonster(monsterTypeId);
+            GameObject monster = UnityEngine.Object.Instantiate(monsterData.Prefab, parent.position, Quaternion.identity, parent);
+
+            IHealth health = monster.GetComponent<IHealth>();
+            health.Current = monsterData.Hp;
+            health.Max = monsterData.Hp;
+
+            monster.GetComponent<ActorUI>().Construct(health);
+            monster.GetComponent<NavMeshAgent>().speed = monsterData.MoveSpeed;
+
+            Attack attack = monster.GetComponent<Attack>();
+            attack.Construct(HeroGameObject.transform);
+            attack.Damage = monsterData.Damage;
+            attack.Cleavage = monsterData.Cleavage;
+            attack.EffectiveDistance = monsterData.EffectiveDistance;
+
+            monster.GetComponent<AgentMoveToPlayer>()?.Construct(HeroGameObject.transform);
+            monster.GetComponent<RotateToHero>()?.Construct(HeroGameObject.transform);
+
+            LootSpawner lootSpawner = monster.GetComponentInChildren<LootSpawner>();
+            lootSpawner.Construct(this, _randomService);
+            lootSpawner.SetLootValue(monsterData.MinLoot, monsterData.MaxLoot);
+
+            return monster;
+        }
+
         public void Cleanup()
         {
             ProgressReaders.Clear();
@@ -93,32 +130,5 @@ namespace CodeBase.Infrastructure.Factory
             ProgressReaders.Add(progressReader);
         }
 
-        public GameObject CreateMonster(MonsterTypeId monsterTypeId, Transform parent)
-        {
-            MonsterStaticData monsterData = _staticDataService.ForMonster(monsterTypeId);
-            GameObject monster = UnityEngine.Object.Instantiate(monsterData.Prefab, parent.position, Quaternion.identity, parent);
-
-            IHealth health = monster.GetComponent<IHealth>();
-            health.Current = monsterData.Hp;
-            health.Max = monsterData.Hp;
-
-            monster.GetComponent<ActorUI>().Construct(health);
-            monster.GetComponent<NavMeshAgent>().speed = monsterData.MoveSpeed;
-
-            Attack attack = monster.GetComponent<Attack>();
-            attack.Construct(HeroGameObject.transform);
-            attack.Damage = monsterData.Damage;
-            attack.Cleavage = monsterData.Cleavage;
-            attack.EffectiveDistance = monsterData.EffectiveDistance;
-
-            monster.GetComponent<AgentMoveToPlayer>()?.Construct(HeroGameObject.transform);
-            monster.GetComponent<RotateToHero>()?.Construct(HeroGameObject.transform);
-
-            LootSpawner lootSpawner = monster.GetComponentInChildren<LootSpawner>();
-            lootSpawner.Construct(this, _randomService);
-            lootSpawner.SetLootValue(monsterData.MinLoot, monsterData.MaxLoot);
-
-            return monster;
-        }
     }
 }
