@@ -8,6 +8,7 @@ using CodeBase.Infrastructure.Services.PersistentProgress;
 using CodeBase.Logic;
 using CodeBase.Services.StaticData;
 using CodeBase.UI;
+using CodeBase.UI.Services.Factory;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -24,8 +25,9 @@ namespace CodeBase.Infrastructure.States
         private readonly IGameFactory _gameFactory;
         private readonly IPersistentProgressService _progressService;
         private readonly IStaticDataService _staticDataService;
+        private readonly IUIFactory _uIFactory;
 
-        public LoadLevelState(GameStateMachine gameStateMachine, SceneLoader sceneLoader, LoadingCurtain loadingCurtain, IGameFactory gameFactory, IPersistentProgressService progressService, IStaticDataService staticDataService)
+        public LoadLevelState(GameStateMachine gameStateMachine, SceneLoader sceneLoader, LoadingCurtain loadingCurtain, IGameFactory gameFactory, IPersistentProgressService progressService, IStaticDataService staticDataService, IUIFactory uIFactory)
         {
             _stateMachine = gameStateMachine;
             _sceneLoader = sceneLoader;
@@ -33,6 +35,7 @@ namespace CodeBase.Infrastructure.States
             _gameFactory = gameFactory;
             _progressService = progressService;
             _staticDataService = staticDataService;
+            _uIFactory = uIFactory;
         }
 
         public void Enter(string sceneName)
@@ -47,16 +50,22 @@ namespace CodeBase.Infrastructure.States
 
         private void OnLoaded()
         {
+            InitUiRoot();
             InitGameWorld();
             InformProgressReaders();
 
             _stateMachine.Enter<GameLoopState>();
         }
 
+
         private void InformProgressReaders()
         {
             foreach (ISavedProgressReader progressReader in _gameFactory.ProgressReaders)
                 progressReader.LoadProgress(_progressService.Progress);
+        }
+        private void InitUiRoot()
+        {
+            _uIFactory.CreateUIRoot();
         }
 
         private void InitGameWorld()

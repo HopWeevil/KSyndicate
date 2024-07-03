@@ -6,5 +6,6 @@ namespace CodeBase.Infrastructure.AssetManagement
         public const string HudPath = "Hud/Hud";
         public const string Loot = "Loot/Loot";
         public const string Spawner = "Enemies/SpawnPoint";
+        public const string UIRootPath = "UI/UIRoot";
     }
 }

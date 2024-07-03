@@ -7,6 +7,8 @@ using CodeBase.Services.Randomizer;
 using CodeBase.Services.StaticData;
 using CodeBase.StaticData;
 using CodeBase.UI;
+using CodeBase.UI.Elements;
+using CodeBase.UI.Services.Windows;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
@@ -19,18 +21,20 @@ namespace CodeBase.Infrastructure.Factory
         private readonly IStaticDataService _staticDataService;
         private readonly IRandomService _randomService;
         private readonly IPersistentProgressService _progressService;
+        private readonly IWindowService _windowService;
 
         public List<ISavedProgressReader> ProgressReaders { get; } = new List<ISavedProgressReader>();
         public List<ISavedProgress> ProgressWriters { get; } = new List<ISavedProgress>();
     
         private GameObject HeroGameObject { get; set; }
 
-        public GameFactory(IAssetProvider assets, IStaticDataService staticDataService, IRandomService randomService, IPersistentProgressService persistentProgressService)
+        public GameFactory(IAssetProvider assets, IStaticDataService staticDataService, IRandomService randomService, IPersistentProgressService persistentProgressService, IWindowService windowService)
         {
             _assets = assets;
             _staticDataService = staticDataService;
             _randomService = randomService;
             _progressService = persistentProgressService;
+            _windowService = windowService;
         }
 
         public GameObject CreateHero(GameObject at)
@@ -43,6 +47,12 @@ namespace CodeBase.Infrastructure.Factory
         {
             GameObject hud = InstantiateRegistered(AssetPath.HudPath);
             hud.GetComponentInChildren<LootCounter>().Construct(_progressService.Progress.WorldData);
+
+            foreach (OpenWindowButton openWindowButton in hud.GetComponentsInChildren<OpenWindowButton>())
+            {
+                openWindowButton.Construct(_windowService);
+            }
+
             return hud;
         }
 
