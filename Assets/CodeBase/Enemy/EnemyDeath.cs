@@ -12,7 +12,7 @@ namespace CodeBase.Enemy
         [SerializeField] private GameObject _deathFx;
         [SerializeField] private float _destroyAfterDeathTime;
 
-       public event Action Happaned;
+       public event Action Happened;
 
         private void Start()
         {
@@ -41,7 +41,7 @@ namespace CodeBase.Enemy
 
             StartCoroutine(DestroyTimer());
       
-            Happaned?.Invoke();
+            Happened?.Invoke();
         }
 
         private void SpawnDeathFx()

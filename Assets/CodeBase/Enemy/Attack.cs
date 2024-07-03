@@ -51,7 +51,7 @@ namespace CodeBase.Enemy
 
         private void OnDestroy()
         {
-            
+            _animator.StateExited -= OnStateExited;
         }
 
         private void Update()
@@ -114,14 +114,12 @@ namespace CodeBase.Enemy
         {
             _isAttacking = true;
             transform.LookAt(_heroTransform);
-            _animator.StartAttack();
+            _animator.PlayAttack();
         }
 
         private void ResetAttack()
         {
-           // Debug.Log("Reset");
             _isAttacking = false;
-           // _animator.StopAttack();
             _currentCooldown = AttackCooldown;
         }
 

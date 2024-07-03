@@ -21,7 +21,13 @@ namespace CodeBase.StaticData
 
         [Range(0,10)]
         public float MoveSpeed = 3;
-    
+
+        [Range(1, 100)]
+        public int MaxLoot;
+
+        [Range(1, 100)]
+        public int MinLoot;
+
         public GameObject Prefab;
     }
 }

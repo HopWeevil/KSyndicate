@@ -48,14 +48,14 @@ namespace CodeBase.Logic
         {
             var monster = _factoty.CreateMonster(_monsterTypeId, transform);
             _enemyDeath = monster.GetComponent<EnemyDeath>();
-            _enemyDeath.Happaned += Slay;
+            _enemyDeath.Happened += Slay;
         }
 
         private void Slay()
         {
             if (_enemyDeath != null)
             {
-                _enemyDeath.Happaned -= Slay;
+                _enemyDeath.Happened -= Slay;
             }
             _slain = true;
         }

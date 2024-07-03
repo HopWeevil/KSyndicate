@@ -43,16 +43,9 @@ namespace CodeBase.Enemy
             Animator.SetBool(IsMoving, false);
         }
 
-        public void StartAttack()
+        public void PlayAttack()
         {
-
-            //Animator.SetTrigger(Attack);
-            Animator.SetBool(Attack, true);
-        }
-
-        public void StopAttack()
-        {
-            Animator.SetBool(Attack, false);
+            Animator.SetTrigger(Attack);
         }
 
         public void EnteredState(int stateHash)

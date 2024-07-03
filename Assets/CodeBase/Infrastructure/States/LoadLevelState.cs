@@ -1,5 +1,7 @@
 ﻿using System;
 using CodeBase.CameraLogic;
+using CodeBase.Data;
+using CodeBase.Enemy;
 using CodeBase.Hero;
 using CodeBase.Infrastructure.Factory;
 using CodeBase.Infrastructure.Services.PersistentProgress;
@@ -56,13 +58,24 @@ namespace CodeBase.Infrastructure.States
         private void InitGameWorld()
         {
             InitSpawners();
-
+            InitLootPieces();
             GameObject hero = _gameFactory.CreateHero(GameObject.FindWithTag(InitialPointTag));
             InitHud(hero);
 
             CameraFollow(hero);
         }
+        private void InitLootPieces()
+        {
+            LootPieceDataDictionary lootPieceData = _progressService.Progress.WorldData.LootData.LootPiecesOnScene;
 
+            foreach (string key in lootPieceData.Dictionary.Keys)
+            {
+                LootPiece lootPiece = _gameFactory.CreateLoot();
+                lootPiece.GetComponent<UniqueId>().Id = key;
+                lootPiece.Initialize(lootPieceData.Dictionary[key].Loot);
+                lootPiece.transform.position = lootPieceData.Dictionary[key].Position.AsUnityVector();
+            }
+        }
         private void InitSpawners()
         {
             foreach (GameObject spawnerObject in GameObject.FindGameObjectsWithTag(EnemySpawnerTag))
