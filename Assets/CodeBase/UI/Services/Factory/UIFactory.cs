@@ -1,6 +1,7 @@
 ﻿using System.Runtime.Serialization;
 using CodeBase.Infrastructure.AssetManagement;
 using CodeBase.Infrastructure.Services.PersistentProgress;
+using CodeBase.Services.Ads;
 using CodeBase.Services.StaticData;
 using CodeBase.StaticData.Windows;
 using CodeBase.UI.Services.Windows;
@@ -16,19 +17,21 @@ namespace CodeBase.UI.Services.Factory
     
         private Transform _uiRoot;
         private readonly IPersistentProgressService _progressService;
+        private readonly IAdsService _adsService;
 
-        public UIFactory(IAssetProvider assets, IStaticDataService staticData, IPersistentProgressService progressService)
+        public UIFactory(IAssetProvider assets, IStaticDataService staticData, IPersistentProgressService progressService, IAdsService adsService)
         {
             _assets = assets;
             _staticData = staticData;
             _progressService = progressService;
+            _adsService = adsService;
         }
 
         public void CreateShop()
         {
             WindowConfig confing = _staticData.ForWindow(WindowId.Shop);
-            WindowBase window = Object.Instantiate(confing.Template, _uiRoot);
-            window.Construct(_progressService);
+            ShopWindow window = Object.Instantiate(confing.Template, _uiRoot) as ShopWindow;
+            window.Construct(_progressService, _adsService);
         }
 
         public void CreateUIRoot()
