@@ -74,6 +74,7 @@ namespace CodeBase.Infrastructure.States
             InitSpawners(levelData);
             InitLootPieces();
             GameObject hero = InitHero(levelData);
+            InitLevelTransfer(levelData);
             InitHud(hero);
 
             CameraFollow(hero);
@@ -118,6 +119,11 @@ namespace CodeBase.Infrastructure.States
             GameObject hud = _gameFactory.CreateHud();
 
             hud.GetComponentInChildren<ActorUI>().Construct(hero.GetComponent<HeroHealth>());
+        }
+
+        private void InitLevelTransfer(LevelStaticData levelData)
+        {
+            _gameFactory.CreateLevelTransfer(levelData.LevelTransfer.Position);
         }
 
         private void CameraFollow(GameObject hero)

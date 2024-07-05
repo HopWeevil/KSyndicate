@@ -12,6 +12,7 @@ using CodeBase.Infrastructure.Services.Randomizer;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using CodeBase.Infrastructure.States;
 
 namespace CodeBase.Infrastructure.Factory
 {
@@ -22,19 +23,21 @@ namespace CodeBase.Infrastructure.Factory
         private readonly IRandomService _randomService;
         private readonly IPersistentProgressService _progressService;
         private readonly IWindowService _windowService;
+        private readonly IGameStateMachine _stateMachine;
 
         public List<ISavedProgressReader> ProgressReaders { get; } = new List<ISavedProgressReader>();
         public List<ISavedProgress> ProgressWriters { get; } = new List<ISavedProgress>();
     
         private GameObject HeroGameObject { get; set; }
 
-        public GameFactory(IAssetProvider assets, IStaticDataService staticDataService, IRandomService randomService, IPersistentProgressService persistentProgressService, IWindowService windowService)
+        public GameFactory(IAssetProvider assets, IStaticDataService staticDataService, IRandomService randomService, IPersistentProgressService persistentProgressService, IWindowService windowService, IGameStateMachine stateMachine)
         {
             _assets = assets;
             _staticDataService = staticDataService;
             _randomService = randomService;
             _progressService = persistentProgressService;
             _windowService = windowService;
+            _stateMachine = stateMachine;
         }
 
         public GameObject CreateHero(Vector3 at)
@@ -55,7 +58,13 @@ namespace CodeBase.Infrastructure.Factory
 
             return hud;
         }
+        public void CreateLevelTransfer(Vector3 at)
+        {
+            GameObject prefab = InstantiateRegistered(AssetPath.LevelTransferInitialPoint, at);
+            LevelTransferTrigger levelTransfer = prefab.GetComponent<LevelTransferTrigger>();
 
+            levelTransfer.Construct(_stateMachine);
+        }
         public LootPiece CreateLoot()
         {
             LootPiece lootPiece = InstantiateRegistered(AssetPath.Loot).GetComponent<LootPiece>();
@@ -139,6 +148,5 @@ namespace CodeBase.Infrastructure.Factory
 
             ProgressReaders.Add(progressReader);
         }
-
     }
 }

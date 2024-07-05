@@ -18,5 +18,6 @@ namespace CodeBase.Infrastructure.Factory
         GameObject CreateMonster(MonsterTypeId monsterTypeId, Transform parent);
         LootPiece CreateLoot();
         void CreateSpawner(Vector3 position, string spawnerId, MonsterTypeId monsterTypeId);
+        void CreateLevelTransfer(Vector3 at);
     }
 }

@@ -17,13 +17,16 @@ MonoBehaviour:
   - Id: Main_94df1f43-97ac-42e2-acd5-0f5b97fb66b2
     MonsterTypeId: 0
     Position: {x: 11.23, y: 0.5, z: -6.88}
+  - Id: Main_65d3509f-f409-40f1-9e85-d34f89f0bac5
+    MonsterTypeId: 10
+    Position: {x: 2.9, y: 0.5, z: -14.96}
   - Id: Main_75ce5f28-517c-424d-8faa-7e1fbe7a5dff
     MonsterTypeId: 0
     Position: {x: -7.87, y: 0.5, z: 5.37}
   - Id: Main_c24831c3-3012-4a35-9c7a-d7d0927ec127
     MonsterTypeId: 0
     Position: {x: 0, y: 0.5, z: 5.37}
-  - Id: Main_65d3509f-f409-40f1-9e85-d34f89f0bac5
-    MonsterTypeId: 10
-    Position: {x: 2.9, y: 0.5, z: -14.96}
   InitialHeroPosition: {x: 9.3, y: 1.24, z: -13.93}
+  LevelTransfer:
+    TransferTo: Dungeon
+    Position: {x: 0.74, y: 0.76, z: 12.277258}

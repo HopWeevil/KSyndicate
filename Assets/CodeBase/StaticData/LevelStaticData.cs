@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using CodeBase.StaticData;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace CodeBase.Services.StaticData
@@ -11,5 +12,6 @@ namespace CodeBase.Services.StaticData
         public List<EnemySpawnerData> EnemySpawners;
 
         public Vector3 InitialHeroPosition;
+        public LevelTransferStaticData LevelTransfer;
     }
 }

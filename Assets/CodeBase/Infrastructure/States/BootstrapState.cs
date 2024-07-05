@@ -44,7 +44,7 @@ namespace CodeBase.Infrastructure.States
             RegisterStaticData();
 
             RegisterAdsService();
-
+            _services.RegisterSingle<IGameStateMachine>(_stateMachine);
             _services.RegisterSingle<IInputService>(InputService());
             _services.RegisterSingle<IRandomService>(new RandomService());
             _services.RegisterSingle<IAssetProvider>(new AssetProvider());
@@ -58,10 +58,13 @@ namespace CodeBase.Infrastructure.States
                 _services.Single<IStaticDataService>(),
                 _services.Single<IRandomService>(),
                 _services.Single<IPersistentProgressService>(),
-                _services.Single<IWindowService>()
+                _services.Single<IWindowService>(),
+                _services.Single<IGameStateMachine>()
             ));
 
             _services.RegisterSingle<ISaveLoadService>(new SaveLoadService(_services.Single<IPersistentProgressService>(), _services.Single<IGameFactory>()));
+
+           
         }
 
         private void RegisterAdsService()

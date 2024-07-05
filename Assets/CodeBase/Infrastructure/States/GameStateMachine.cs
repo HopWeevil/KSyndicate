@@ -10,7 +10,7 @@ using CodeBase.UI.Services.Factory;
 
 namespace CodeBase.Infrastructure.States
 {
-    public class GameStateMachine
+    public class GameStateMachine : IGameStateMachine
     {
         private Dictionary<Type, IExitableState> _states;
         private IExitableState _activeState;
@@ -25,7 +25,7 @@ namespace CodeBase.Infrastructure.States
                 [typeof(GameLoopState)] = new GameLoopState(this),
             };
         }
-    
+
         public void Enter<TState>() where TState : class, IState
         {
             IState state = ChangeState<TState>();
@@ -41,10 +41,10 @@ namespace CodeBase.Infrastructure.States
         private TState ChangeState<TState>() where TState : class, IExitableState
         {
             _activeState?.Exit();
-      
+
             TState state = GetState<TState>();
             _activeState = state;
-      
+
             return state;
         }
 

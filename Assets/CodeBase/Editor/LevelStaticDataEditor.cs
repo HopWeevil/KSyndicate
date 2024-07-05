@@ -13,6 +13,8 @@ namespace CodeBase.Editor
     public class LevelStaticDataEditor : UnityEditor.Editor
     {
         private const string InitialPointTag = "InitialPoint";
+        private const string LevelTransferInitialPointTag = "LevelTransferInitialPoint";
+
         public override void OnInspectorGUI()
         {
             base.OnInspectorGUI();
@@ -29,6 +31,8 @@ namespace CodeBase.Editor
                 levelData.LevelKey = SceneManager.GetActiveScene().name;
 
                 levelData.InitialHeroPosition = GameObject.FindWithTag(InitialPointTag).transform.position;
+
+                levelData.LevelTransfer.Position = GameObject.FindWithTag(LevelTransferInitialPointTag).transform.position;
 
             }
 
