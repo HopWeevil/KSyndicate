@@ -1,5 +1,5 @@
-﻿using CodeBase.Infrastructure.Services.PersistentProgress;
-using CodeBase.Services.Ads;
+﻿using CodeBase.Infrastructure.Services.Ads;
+using CodeBase.Infrastructure.Services.PersistentProgress;
 using CodeBase.UI.Windows.Shop;
 using TMPro;
 using UnityEngine;

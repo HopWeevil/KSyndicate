@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.Advertisements;
 
-namespace CodeBase.Services.Ads
+namespace CodeBase.Infrastructure.Services.Ads
 {
     public class AdsService : IAdsService, IUnityAdsInitializationListener, IUnityAdsLoadListener, IUnityAdsShowListener
     {

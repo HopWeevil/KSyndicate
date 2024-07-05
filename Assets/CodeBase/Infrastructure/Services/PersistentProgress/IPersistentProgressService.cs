@@ -1,4 +1,5 @@
 using CodeBase.Data;
+using CodeBase.Infrastructure.ServiceLocator;
 
 namespace CodeBase.Infrastructure.Services.PersistentProgress
 {

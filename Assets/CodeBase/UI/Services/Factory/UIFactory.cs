@@ -1,7 +1,7 @@
 ﻿using System.Runtime.Serialization;
 using CodeBase.Infrastructure.AssetManagement;
+using CodeBase.Infrastructure.Services.Ads;
 using CodeBase.Infrastructure.Services.PersistentProgress;
-using CodeBase.Services.Ads;
 using CodeBase.Services.StaticData;
 using CodeBase.StaticData.Windows;
 using CodeBase.UI.Services.Windows;

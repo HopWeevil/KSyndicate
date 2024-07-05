@@ -1,8 +1,4 @@
-using CodeBase.Hero;
-using CodeBase.Infrastructure.Factory;
-using CodeBase.Infrastructure.Services;
 using CodeBase.Logic;
-using System;
 using System.Linq;
 using UnityEngine;
 

@@ -1,4 +1,6 @@
-namespace CodeBase.Infrastructure.Services
+using CodeBase.Infrastructure.Services;
+
+namespace CodeBase.Infrastructure.ServiceLocator
 {
     public class AllServices
     {

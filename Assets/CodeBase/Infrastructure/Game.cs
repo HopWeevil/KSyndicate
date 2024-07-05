@@ -1,4 +1,4 @@
-using CodeBase.Infrastructure.Services;
+using CodeBase.Infrastructure.ServiceLocator;
 using CodeBase.Infrastructure.States;
 using CodeBase.Logic;
 

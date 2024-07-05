@@ -1,11 +1,10 @@
-using System;
 using CodeBase.Data;
 using CodeBase.Enemy;
-using CodeBase.Infrastructure.Services;
-using CodeBase.Infrastructure.Services.PersistentProgress;
 using CodeBase.Logic;
-using CodeBase.Services.Input;
 using UnityEngine;
+using CodeBase.Infrastructure.Services.Input;
+using CodeBase.Infrastructure.Services.PersistentProgress;
+using CodeBase.Infrastructure.ServiceLocator;
 
 namespace CodeBase.Hero
 {
@@ -49,9 +48,11 @@ namespace CodeBase.Hero
         {
             return Physics.OverlapSphereNonAlloc(StartPoint() + transform.forward, _stats.DamageRadius, _hits, _layerMask);
         }
-            
-        private Vector3 StartPoint() =>
-            new Vector3(transform.position.x, _characterController.center.y / 2, transform.position.z);
+
+        private Vector3 StartPoint()
+        {
+            return new Vector3(transform.position.x, _characterController.center.y / 2, transform.position.z);
+        }
 
         public void LoadProgress(PlayerProgress progress)
         {

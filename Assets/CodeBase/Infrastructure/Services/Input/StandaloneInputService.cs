@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace CodeBase.Services.Input
+namespace CodeBase.Infrastructure.Services.Input
 {
     public class StandaloneInputService : InputService
     {
@@ -8,14 +8,14 @@ namespace CodeBase.Services.Input
         {
             get
             {
-            Vector2 axis = SimpleInputAxis();
+                Vector2 axis = SimpleInputAxis();
 
-            if (axis == Vector2.zero)
-            {
-                axis = UnityAxis();
-            }
+                if (axis == Vector2.zero)
+                {
+                    axis = UnityAxis();
+                }
 
-            return axis;
+                return axis;
             }
         }
 

@@ -1,4 +1,4 @@
-﻿using CodeBase.Infrastructure.Services;
+﻿using CodeBase.Infrastructure.ServiceLocator;
 
 namespace CodeBase.UI.Services.Factory
 {

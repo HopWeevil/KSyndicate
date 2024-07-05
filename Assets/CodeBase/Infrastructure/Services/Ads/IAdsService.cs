@@ -1,7 +1,7 @@
-﻿using CodeBase.Infrastructure.Services;
+﻿using CodeBase.Infrastructure.ServiceLocator;
 using System;
 
-namespace CodeBase.Services.Ads
+namespace CodeBase.Infrastructure.Services.Ads
 {
     public interface IAdsService : IService
     {
