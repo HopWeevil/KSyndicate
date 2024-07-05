@@ -1,11 +1,17 @@
 using CodeBase.Infrastructure.ServiceLocator;
+using System.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 
 namespace CodeBase.Infrastructure.AssetManagement
 {
     public interface IAssetProvider : IService
     {
-        GameObject Instantiate(string path, Vector3 at);
-        GameObject Instantiate(string path);
+        Task<GameObject> Instantiate(string path, Vector3 at);
+        Task<GameObject> Instantiate(string path);
+        Task<T> Load<T>(AssetReference monsterDataPrefabReference) where T : class;
+        void Cleanup();
+        Task<T> Load<T>(string address) where T : class;
+        void Initialize();
     }
 }

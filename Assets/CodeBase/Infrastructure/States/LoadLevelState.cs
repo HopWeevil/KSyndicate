@@ -8,6 +8,7 @@ using CodeBase.Logic;
 using CodeBase.Services.StaticData;
 using CodeBase.UI;
 using CodeBase.UI.Services.Factory;
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -38,6 +39,7 @@ namespace CodeBase.Infrastructure.States
         {
             _loadingCurtain.Show();
             _gameFactory.Cleanup();
+            _gameFactory.WarmUp();
             _sceneLoader.Load(sceneName, OnLoaded);
         }
 
@@ -46,10 +48,10 @@ namespace CodeBase.Infrastructure.States
             _loadingCurtain.Hide();
         }
 
-        private void OnLoaded()
+        private async void OnLoaded()
         {
-            InitUiRoot();
-            InitGameWorld();
+            await InitUiRoot();
+            await InitGameWorld();
             InformProgressReaders();
 
             _stateMachine.Enter<GameLoopState>();
@@ -62,20 +64,20 @@ namespace CodeBase.Infrastructure.States
                 progressReader.LoadProgress(_progressService.Progress);
             }
         }
-        private void InitUiRoot()
+        private async Task InitUiRoot()
         {
-            _uIFactory.CreateUIRoot();
+            await _uIFactory.CreateUIRoot();
         }
 
-        private void InitGameWorld()
+        private async Task InitGameWorld()
         {
             LevelStaticData levelData = GetLevelStaticData();
 
-            InitSpawners(levelData);
-            InitLootPieces();
-            GameObject hero = InitHero(levelData);
-            InitLevelTransfer(levelData);
-            InitHud(hero);
+            await InitSpawners(levelData);
+            await InitLootPieces();
+            GameObject hero = await InitHero(levelData);
+            await InitLevelTransfer(levelData);
+            await InitHud(hero);
 
             CameraFollow(hero);
         }
@@ -87,43 +89,43 @@ namespace CodeBase.Infrastructure.States
             return levelData;
         }
 
-        private GameObject InitHero(LevelStaticData levelData)
+        private async Task<GameObject> InitHero(LevelStaticData levelData)
         {
-            GameObject hero = _gameFactory.CreateHero(levelData.InitialHeroPosition);
+            GameObject hero = await _gameFactory.CreateHero(levelData.InitialHeroPosition);
             return hero;
         }
 
-        private void InitLootPieces()
+        private async Task InitLootPieces()
         {
             LootPieceDataDictionary lootPieceData = _progressService.Progress.WorldData.LootData.LootPiecesOnScene;
 
             foreach (string key in lootPieceData.Dictionary.Keys)
             {
-                LootPiece lootPiece = _gameFactory.CreateLoot();
+                LootPiece lootPiece = await _gameFactory.CreateLoot();
                 lootPiece.GetComponent<UniqueId>().Id = key;
                 lootPiece.Initialize(lootPieceData.Dictionary[key].Loot);
                 lootPiece.transform.position = lootPieceData.Dictionary[key].Position.AsUnityVector();
             }
         }
 
-        private void InitSpawners(LevelStaticData levelData)
+        private async Task InitSpawners(LevelStaticData levelData)
         {
             foreach(EnemySpawnerData spawnerData in levelData.EnemySpawners)
             {
-                _gameFactory.CreateSpawner(spawnerData.Position, spawnerData.Id, spawnerData.MonsterTypeId);
+                await _gameFactory.CreateSpawner(spawnerData.Id, spawnerData.Position, spawnerData.MonsterTypeId);
             }
         }
 
-        private void InitHud(GameObject hero)
+        private async Task InitHud(GameObject hero)
         {
-            GameObject hud = _gameFactory.CreateHud();
+            GameObject hud = await _gameFactory.CreateHud();
 
             hud.GetComponentInChildren<ActorUI>().Construct(hero.GetComponent<HeroHealth>());
         }
 
-        private void InitLevelTransfer(LevelStaticData levelData)
+        private async Task InitLevelTransfer(LevelStaticData levelData)
         {
-            _gameFactory.CreateLevelTransfer(levelData.LevelTransfer.Position);
+           await _gameFactory.CreateLevelTransfer(levelData.LevelTransfer.Position);
         }
 
         private void CameraFollow(GameObject hero)

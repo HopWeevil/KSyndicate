@@ -42,9 +42,9 @@ namespace CodeBase.Logic.EnemySpawners
             }
         }
 
-        private void Spawn()
+        private async void Spawn()
         {
-            var monster = _factoty.CreateMonster(MonsterTypeId, transform);
+            var monster = await _factoty.CreateMonster(MonsterTypeId, transform);
             _enemyDeath = monster.GetComponent<EnemyDeath>();
             _enemyDeath.Happened += Slay;
         }

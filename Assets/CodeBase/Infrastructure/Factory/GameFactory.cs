@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 using CodeBase.Infrastructure.States;
+using System.Threading.Tasks;
 
 namespace CodeBase.Infrastructure.Factory
 {
@@ -40,15 +41,15 @@ namespace CodeBase.Infrastructure.Factory
             _stateMachine = stateMachine;
         }
 
-        public GameObject CreateHero(Vector3 at)
+        public async Task<GameObject> CreateHero(Vector3 at)
         {
-            HeroGameObject = InstantiateRegistered(AssetPath.HeroPath, at);
-            return HeroGameObject;
+            return HeroGameObject = await InstantiateRegisteredAsync(AssetAddress.HeroPath, at);
         }
 
-        public GameObject CreateHud()
+        public async Task<GameObject> CreateHud()
         {
-            GameObject hud = InstantiateRegistered(AssetPath.HudPath);
+            GameObject hud = await InstantiateRegisteredAsync(AssetAddress.HudPath);
+
             hud.GetComponentInChildren<LootCounter>().Construct(_progressService.Progress.WorldData);
 
             foreach (OpenWindowButton openWindowButton in hud.GetComponentsInChildren<OpenWindowButton>())
@@ -58,35 +59,43 @@ namespace CodeBase.Infrastructure.Factory
 
             return hud;
         }
-        public void CreateLevelTransfer(Vector3 at)
+
+        public async Task CreateLevelTransfer(Vector3 at)
         {
-            GameObject prefab = InstantiateRegistered(AssetPath.LevelTransferInitialPoint, at);
+            GameObject prefab = await InstantiateRegisteredAsync(AssetAddress.LevelTransferInitialPoint, at);
             LevelTransferTrigger levelTransfer = prefab.GetComponent<LevelTransferTrigger>();
 
             levelTransfer.Construct(_stateMachine);
         }
-        public LootPiece CreateLoot()
+
+        public async Task<LootPiece> CreateLoot()
         {
-            LootPiece lootPiece = InstantiateRegistered(AssetPath.Loot).GetComponent<LootPiece>();
+            GameObject prefab = await _assets.Load<GameObject>(AssetAddress.Loot);
+            LootPiece lootPiece = InstantiateRegistered(prefab).GetComponent<LootPiece>();
 
             lootPiece.Construct(_progressService.Progress.WorldData);
 
             return lootPiece;
         }
 
-        public void CreateSpawner(Vector3 position, string spawnerId, MonsterTypeId monsterTypeId)
+        public async Task CreateSpawner(string spawnerId, Vector3 at, MonsterTypeId monsterTypeId)
         {
-            SpawnPoint spawner = InstantiateRegistered(AssetPath.Spawner, position).GetComponent<SpawnPoint>();
+            GameObject prefab = await _assets.Load<GameObject>(AssetAddress.Spawner);
+
+            SpawnPoint spawner = InstantiateRegistered(prefab, at).GetComponent<SpawnPoint>();
 
             spawner.Construct(this);
             spawner.MonsterTypeId = monsterTypeId;
             spawner.Id = spawnerId;
         }
 
-        public GameObject CreateMonster(MonsterTypeId monsterTypeId, Transform parent)
+        public async Task<GameObject> CreateMonster(MonsterTypeId monsterTypeId, Transform parent)
         {
             MonsterStaticData monsterData = _staticDataService.ForMonster(monsterTypeId);
-            GameObject monster = UnityEngine.Object.Instantiate(monsterData.Prefab, parent.position, Quaternion.identity, parent);
+
+
+            GameObject prefab = await _assets.Load<GameObject>(monsterData.PrefabReference);
+            GameObject monster = Object.Instantiate(prefab, parent.position, Quaternion.identity, parent);
 
             IHealth health = monster.GetComponent<IHealth>();
             health.Current = monsterData.Hp;
@@ -115,21 +124,45 @@ namespace CodeBase.Infrastructure.Factory
         {
             ProgressReaders.Clear();
             ProgressWriters.Clear();
+
+            _assets.Cleanup();
         }
 
-        private GameObject InstantiateRegistered(string prefabPath, Vector3 at)
+        public async Task WarmUp()
         {
-            GameObject gameObject = _assets.Instantiate(path: prefabPath, at: at);
+            await _assets.Load<GameObject>(AssetAddress.Loot);
+            await _assets.Load<GameObject>(AssetAddress.Spawner);
+        }
 
+        private GameObject InstantiateRegistered(GameObject prefab, Vector3 at)
+        {
+            GameObject gameObject = Object.Instantiate(prefab, at, Quaternion.identity);
             RegisterProgressWatchers(gameObject);
+
             return gameObject;
-        } 
-    
-        private GameObject InstantiateRegistered(string prefabPath)
-        {
-            GameObject gameObject = _assets.Instantiate(path: prefabPath);
+        }
 
+        private GameObject InstantiateRegistered(GameObject prefab)
+        {
+            GameObject gameObject = Object.Instantiate(prefab);
             RegisterProgressWatchers(gameObject);
+
+            return gameObject;
+        }
+
+        private async Task<GameObject> InstantiateRegisteredAsync(string prefabPath, Vector3 at)
+        {
+            GameObject gameObject = await _assets.Instantiate(path: prefabPath, at: at);
+            RegisterProgressWatchers(gameObject);
+
+            return gameObject;
+        }
+
+        private async Task<GameObject> InstantiateRegisteredAsync(string prefabPath)
+        {
+            GameObject gameObject = await _assets.Instantiate(path: prefabPath);
+            RegisterProgressWatchers(gameObject);
+
             return gameObject;
         }
 
